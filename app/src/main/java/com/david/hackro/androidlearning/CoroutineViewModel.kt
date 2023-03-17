@@ -2,19 +2,17 @@ package com.david.hackro.androidlearning
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 
 /**
  * @see
  * https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html
+ * https://amitshekhar.me/blog/launch-vs-async-in-kotlin-coroutines
+ * https://medium.com/@theAndroidDeveloper/5-common-kotlin-coroutines-interview-questions-f084d098f51d
  */
 
 class CoroutineViewModel : ViewModel() {
-
-
-    // Job and Dispatcher are combined into a CoroutineContext which
-    // will be discussed shortly
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val itemList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
 
@@ -70,7 +68,7 @@ class CoroutineViewModel : ViewModel() {
      * Could apply await operation over Deferred object to get the value
      * Exception is store inside the deferred
      */
-    private fun asyncCoroutine() = scope.launch {
+    private fun asyncCoroutine() = viewModelScope.launch {
         val deferredJob = GlobalScope.async(Dispatchers.Default) {
             itemList.count()
         }
